@@ -1,0 +1,128 @@
+openapi: 3.0.0
+tags: 
+  - name: "Like"
+info:
+  title: Likes API
+  description: Simple Likes API written by [Dave Winer](https://github.com/scripting/likes)
+    for registering likes. I created this documentation for the API for my own
+    use. You can use it too. [Thejesh GN](https://thejeshgn.com)
+  version: 0.4.10
+  contact:
+    name: Thejesh GN
+paths:
+  /toggle:
+    get:
+      operationId: toggle-like-or-unlike
+      tags:
+        - "Like"
+      summary: Toggle - like or unlike
+      description: |
+        This will toggle the logged in use's like for a specific url.
+      parameters:
+        - name: oauth_token
+          in: query
+          description: oauth_token
+          required: true
+          schema:
+            type: string
+        - name: oauth_token_secret
+          in: query
+          description: oauth_token_secret
+          required: true
+          schema:
+            type: string
+        - name: url
+          in: query
+          description: URL which you want to like or unlike
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: An array of usernames who have liked
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /likes:
+    get:
+      operationId: get-likes
+      tags:
+        - "Like"      
+      summary: Get likes for a given URL
+      description: |
+        Given a url it will get the urls. It doesn't need credentials.
+      parameters:
+        - name: url
+          in: query
+          description: URL which you want to get the details likes
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: An array of usernames who have liked, ordered by when they liked.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /mylikes:
+    get:
+      operationId: get-my-likes
+      tags:
+        - "Like"      
+      summary: Get the list of likes by the present user
+      description: |
+        This will get you the list of liked urls by the presently logged in user
+      parameters:
+        - name: oauth_token
+          in: query
+          description: oauth_token
+          required: true
+          schema:
+            type: string
+        - name: oauth_token_secret
+          in: query
+          description: oauth_token_secret
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: An array of urls the urer has liked
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /toplikes:
+    get:
+      operationId: get-top-likes
+      tags:
+        - "Like"
+      summary: Get the list of top likes
+      description: |
+        This will get you top ten likes on the platfom
+      responses:
+        "200":
+          description: An array of urls the urer has liked
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                      description: Liked url
+                    ctLikes:
+                      type: number
+                      description: Number of people liked this url
+servers:
+  - url: http://likes.scripting.com
